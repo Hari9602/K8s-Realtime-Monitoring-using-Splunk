@@ -1,0 +1,34 @@
+global:
+  splunk:
+    hec:
+      host: 192.168.131.128      # Your Splunk HEC endpoint
+      port: 8088
+      token: 83be9ab2-06bf-4b54-abef-95fa2d2eccd0
+      protocol: http
+      indexName: k8s_logs         # Custom index for Kubernetes logs
+
+splunk-kubernetes-logging:
+  enabled: true
+
+  fluentd:
+    path: /var/log/containers/*.log
+
+    exclude_path:
+      - /var/log/containers/kube-svc-redirect*.log
+      - /var/log/containers/splunk*.log
+      - /var/log/containers/*_kube-system_*.log
+
+  rbac:
+    create: true
+
+  serviceAccount:
+    create: true
+
+  containers:
+    logFormatType: cri
+
+splunk-kubernetes-metrics:
+  enabled: false
+
+splunk-kubernetes-objects:
+  enabled: false
